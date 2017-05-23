@@ -1,7 +1,7 @@
 runTimePlot = function(preparedData, savePlot = TRUE, directoryPath = directoryPath){
   print("Plotting runtime")
   pdf(paste(directoryPath,"cGSEA_methods_runtime.pdf",sep = ""), width = 10, height = 7, useDingbats = FALSE)
-  barplot(unlist(preparedData$time), las = 2, ylab = "second", main = "RunTime")
+  graphics::barplot(unlist(preparedData$time), las = 2, ylab = "second", main = "RunTime")
   dev.off()
 
 }
@@ -9,85 +9,66 @@ runTimePlot = function(preparedData, savePlot = TRUE, directoryPath = directoryP
 clusteringPlot = function(preparedData, contrCondi, savePlot = TRUE, directoryPath = directoryPath){
   print(paste("Plotting cluster Plot for condition", contrCondi))
   pdf(paste(directoryPath, contrCondi, "_clustering.pdf", sep = ""), width = 10, height = 7, useDingbats = FALSE)
-  plot(preparedData$clustering[[contrCondi]], hang = -0.1)
+  graphics::plot(preparedData$clustering[[contrCondi]], hang = -0.1)
   dev.off()
 }
 
 heatmapPlot = function(preparedData, contrCondi, savePlot = TRUE, directoryPath = directoryPath){
-    if(!require(pheatmap)){
-        install.packages("pheatmap")
-        require(pheatmap)
-    }
 
     if(savePlot == TRUE){
         print(paste("Plotting heatmap for condition", contrCondi))
         pdf(paste(directoryPath, contrCondi, "_pvalue_heatmap.pdf", sep = ""), width = 10, height = 7, useDingbats = FALSE)
-        pheatmap(preparedData$heatmap[[contrCondi]], fontsize_row = 5)
+        pheatmap::pheatmap(preparedData$heatmap[[contrCondi]], fontsize_row = 5)
         dev.off()
     } else {
-        pheatmap(preparedData$heatmap[[contrCondi]])
+        pheatmap::pheatmap(preparedData$heatmap[[contrCondi]])
     }
 }
 
 pcaPlot = function(preparedData, contrCondi, savePlot = TRUE, directoryPath = directoryPath){
-  if(!require(FactoMineR)){
-    install.packages("FactoMineR")
-    require(FactoMineR)
-  }
 
-  res.pca = PCA(preparedData$PCA[[contrCondi]], scale.unit = T, axes = c(1,2), graph = FALSE)
+  res.pca = FactoMineR::PCA(preparedData$PCA[[contrCondi]], scale.unit = T, axes = c(1,2), graph = FALSE)
   eigen = res.pca$eig$`percentage of variance`
-  names(eigen) = rownames(res.pca$eig)
+  base::names(eigen) = base::rownames(res.pca$eig)
 
   print(paste("Plotting Eigen values Plot for condition", contrCondi))
   pdf(paste(directoryPath, contrCondi, "_eigen_fall.pdf", sep = ""), width = 10, height = 7, useDingbats = FALSE)
-  barplot(eigen, las = 2, ylab = "%")
+  graphics::barplot(eigen, las = 2, ylab = "%")
   dev.off()
 
   print(paste("Plotting PCA Plot for condition", contrCondi))
   pdf(paste(directoryPath, contrCondi, "_pca.pdf", sep = ""), width = 10, height = 7, useDingbats = FALSE)
-  plot(res.pca, choix = 'ind')
+  graphics::plot(res.pca, choix = 'ind')
   dev.off()
 }
 
 corPlot = function(preparedData, contrCondi, savePlot = TRUE, directoryPath = directoryPath){
-  if(!require(corrplot)){
-  install.packages("corrplot")
-  require(corrplot)
-  }
 
   print(paste("Plotting correlation Plot for condition", contrCondi))
   pdf(paste(directoryPath, contrCondi, "_correlation.pdf", sep = ""), width = 10, height = 7, useDingbats = FALSE)
-  corrplot(preparedData$correlation[[contrCondi]], method = "circle", type = "full", order = "hclust",mar=c(10, 4, 4, 2) + 0.1)
+  corrplot::corrplot(preparedData$correlation[[contrCondi]], method = "circle", type = "full", order = "hclust",mar=c(10, 4, 4, 2) + 0.1)
   dev.off()
 }
 
 upsetrPlot = function(preparedData, contrCondi, savePlot = TRUE, directoryPath = directoryPath){
-  if(!require(UpSetR)){
-    install.packages("UpSetR")
-    require(UpSetR)
-  }
+
   print(paste("Plotting UpsetR Plot for condition", contrCondi))
   pdf(paste(directoryPath, contrCondi, "_upsetr.pdf", sep = ""), width = 10, height = 7, useDingbats = FALSE)
-  upset(fromList(preparedData$snailPlot[[contrCondi]]),order.by = "freq")
+  UpSetR::upset(fromList(preparedData$snailPlot[[contrCondi]]),order.by = "freq")
   dev.off()
 
 }
 
 snailPlot = function(preparedData, contrCondi, savePlot = TRUE, min.intersection.size = 1, directoryPath = directoryPath){
-  if(!require(SuperExactTest)){
-    install.packages("SuperExactTest")
-    require(SuperExactTest)
-  }
 
-  snail = supertest(preparedData$snailPlot[[contrCondi]], n = length(levels(preparedData$snailPlot[[contrCondi]][[1]])))
+  snail = SuperExactTest::supertest(preparedData$snailPlot[[contrCondi]], n = length(levels(preparedData$snailPlot[[contrCondi]][[1]])))
   print(paste("Plotting Snail Plot for condition", contrCondi))
   if (savePlot == TRUE){
       pdf(paste(directoryPath, contrCondi, "_snailplot.pdf", sep = ""), width = 10, height = 7, useDingbats = FALSE)
-      plot.msets(snail, sort.by="size", keep.empty.intersections=FALSE, min.intersection.size = min.intersection.size)
+      SuperExactTest::plot.msets(snail, sort.by="size", keep.empty.intersections=FALSE, min.intersection.size = min.intersection.size)
       dev.off()
   } else {
-      plot.msets(snail, sort.by="size", keep.empty.intersections=FALSE, min.intersection.size = min.intersection.size)
+      SuperExactTest::plot.msets(snail, sort.by="size", keep.empty.intersections=FALSE, min.intersection.size = min.intersection.size)
   }
 
 }
@@ -96,11 +77,11 @@ resumPlot1 = function(preparedData, contrCondi, savePlot = TRUE, directoryPath =
 
   print(paste("Plotting simple Summary Plot for condition", contrCondi))
   pdf(paste(directoryPath, contrCondi, "_simple_sumplot.pdf", sep = ""), width = 10, height = 7, useDingbats = FALSE)
-  plot(preparedData$resumPlot1[[contrCondi]][["x"]], preparedData$resumPlot1[[contrCondi]][["y"]], xlab = '-log10(pVal)', ylab = "avg logFC")
-  abline(h = 0)
-  abline(v = 0)
-  text(preparedData$resumPlot1[[contrCondi]][['x']], preparedData$resumPlot1[[contrCondi]][['y']], labels=preparedData$resumPlot1[[contrCondi]][['labels']], cex= 0.7)
-  abline(v = -log10(0.05), col = "red")
+  graphics::plot(preparedData$resumPlot1[[contrCondi]][["x"]], preparedData$resumPlot1[[contrCondi]][["y"]], xlab = '-log10(pVal)', ylab = "avg logFC")
+  graphics::abline(h = 0)
+  graphics::abline(v = 0)
+  graphics::text(preparedData$resumPlot1[[contrCondi]][['x']], preparedData$resumPlot1[[contrCondi]][['y']], labels=preparedData$resumPlot1[[contrCondi]][['labels']], cex= 0.7)
+  graphics::abline(v = -log10(0.05), col = "red")
   dev.off()
 }
 
@@ -111,9 +92,9 @@ resumPlot2 = function(preparedData, contrCondi, savePlot = TRUE, directoryPath= 
 }
 
 cGSEAMakePlots = function(preparedData, directoryPath){
-  dir.create(file.path(directoryPath,"/plots/"), showWarnings = FALSE)
+  base::dir.create(base::file.path(directoryPath,"/plots/"), showWarnings = FALSE)
   for (condi in names(preparedData$result)){
-    dir.create(file.path(directoryPath,"/plots/", condi), showWarnings = FALSE)
+    base::dir.create(file.path(directoryPath,"/plots/", condi), showWarnings = FALSE)
     clusteringPlot(preparedData = preparedData, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/"))
     pcaPlot(preparedData = preparedData, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/"))
     corPlot(preparedData = preparedData, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/"))
