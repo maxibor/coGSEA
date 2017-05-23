@@ -77,13 +77,13 @@ generateSummaryPlots <- function(plot.data, file.name = "resumPlot", Xlab="-log1
         # plot direction-based coloured bubbles
         top.10.ids = as.character(plot.data[plot.data[, "rank"] <= firstN,
 "id"])
-        sig.ids = ggplot2::setdiff(plot.data[rank(-plot.data[,"sig"], na.last =
+        sig.ids = base::setdiff(plot.data[rank(-plot.data[,"sig"], na.last =
 TRUE) <= 5, "id"], top.10.ids)
         sig.cols = c(rep("black", length(top.10.ids)), rep("blue",
 length(sig.ids)))
         plot.data.sig = plot.data[match(c(top.10.ids, sig.ids),
 plot.data[, "id"]), ]
-        p = qplot(x.data, y.data, data=plot.data, size=sig,asp=1,
+        p = ggplot2::qplot(x.data, y.data, data=plot.data, size=sig,asp=1,
                 colour=dir,
                 xlab = Xlab, ylab = Ylab,
                 xlim=xlimits,
@@ -105,7 +105,7 @@ name="Regulation Direction") # low="#5FE377"
                                 colour=sig.cols, vjust=-1, hjust=1) )
                 dev.off()
             }
-            if (is.null(format) || tolower(format) == "png"){
+            if (is.null(format) || base::tolower(format) == "png"){
                 png(paste0(file.name, "_direction.png"), width = 800, height = 700)
                 print(p + ggplot2::geom_text(size=5, mapping=aes(x=x.data, y=y.data,
                                 label=id),
