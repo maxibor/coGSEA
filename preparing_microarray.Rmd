@@ -1,0 +1,181 @@
+---
+title: "Preparing micro-array data for coGSEA analysis"
+output: html_notebook
+---
+
+## Reading and preparing data for [coGSEA](link) analysis.
+
+In this document, we will show you how to prepare micro-array data to perform a coGSEA analysis.  
+
+This example dataset is from a [article](https://www.ncbi.nlm.nih.gov/pubmed/21836821) about Astrocymotas tumors published in 2011 by Liu et al.  
+
+You can download it on the Gene Expression Omnibus database with the accession number [GSE19728](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19728)  
+
+#
+
+#### Loading the necessary packages for this analysis
+
+```{r, eval}
+library(affy)
+library(hgu133plus2.db)
+library(edgeR)
+library(gage)
+library(coGSEA)
+```
+
+#### Loading the CEL FILES and Normalizing them usin `rma`
+
+```{r}
+setwd("~/GitLab/GSE19728/data/")
+celfiles = ReadAffy()
+celfiles = rma(celfiles)
+```
+
+#### Getting the expression data, and the Probe Names
+
+```{r}
+
+intensity = exprs(celfiles)
+intensity = cbind(rownames(intensity), intensity)
+colnames(intensity)[1] = "PROBEID"
+intensity = as.data.frame(intensity)
+intensity$PROBEID = as.character(intensity$PROBEID)
+```
+
+#### Getting the annotations of Probes IDS to ENTREZ accession numbers
+
+```{r}
+annots = select(hgu133plus2.db, intensity$PROBEID, "ENTREZID", "PROBEID")
+```
+
+#### Merge expression matrix and annotation
+
+```{r}
+res = merge(intensity, annots, by= "PROBEID")
+
+```
+
+
+#### Getting rid of PROBE ids and type casting 
+
+```{r}
+resmin = res[,2:ncol(res)]
+cname = colnames(resmin)
+resmin = apply(resmin, 2, as.numeric)
+colnames(resmin)= cname
+resmin = as.data.frame(resmin)
+```
+
+#### Aggregating the PROBES matching the same ENTREZ accession number by averaging them and applying a log transformation
+
+```{r}
+result = aggregate(. ~ ENTREZID, resmin, mean)
+result$ENTREZID = levels(as.factor(as.character(resmin$ENTREZID)))
+rownames(result) = result$ENTREZID
+result = result[,-1]
+result = log(result)
+```
+
+#### Visualizing in boxplot to check normalization
+
+```{r}
+boxplot(result, las = 2)
+```
+
+#### Changing column names to remove the `.CEL` filename extension
+
+```{r}
+colnames(result) = gsub(".CEL","", colnames(result))
+print(colnames(result))
+```
+
+
+#### Selecting only the samples we are interested in
+
+```{r}
+result2 = cbind(result$GSM492649_Astrocytomas_N, result$GSM525014, result$GSM525015, result$GSM525016, result$`GSM492662_Astrocytomas_T4-1`, result$`GSM492663_Astrocytomas_T4-2` , result$`GSM492664_Astrocytomas_T4-3`, result$`GSM492665_Astrocytomas_T4-4`, result$`GSM492666_Astrocytomas_T4-5`)
+colnames(result2) = c("GSM492649_Astrocytomas_N", "GSM525014", "GSM525015", "GSM525016","GSM492662_Astrocytomas_T4-1", "GSM492663_Astrocytomas_T4-2", "GSM492664_Astrocytomas_T4-3", "GSM492665_Astrocytomas_T4-4", "GSM492666_Astrocytomas_T4-5" )
+rownames(result2) = rownames(result)
+```
+
+#### Preparing the design matrix
+
+```{r}
+Normal = c(rep(1,4),rep(0,5))
+Tumor = c(rep(0,4),rep(1,5))
+design = cbind(Normal, Tumor)
+rownames(design) = colnames(result2)
+```
+
+#### Preparing the contrast matrix
+
+```{r}
+contr.matrix = makeContrasts(NormalVSTumor = Normal - Tumor, levels = design)
+```
+
+
+#### Preparing expression list object
+
+```{r}
+temp = new("EList")
+temp$design = design
+temp$E = as.matrix(result2)
+rownames(temp$E) = as.numeric(rownames(temp$E))
+temp$genes$ENTREZ = rownames(result2)
+temp$common.dispersion = estimateDisp(temp$E, design = temp$design)$common.dispersion
+temp$samples = colnames(result2)
+```
+
+#### Preparing gene set collection
+
+```{r}
+gs = gage::kegg.gsets(species = "hsa", id.type = "entrez")
+geneset = gs$kg.sets
+```
+
+#### Function for simplifying gene sets names
+
+```{r}
+nameshorter = function(names){
+  namemod = c()
+  for (i in seq(1,length(names))){
+    namemod[i] = paste(strsplit(names[i], " ")[[1]][-1], sep = "", collapse = " ")
+    namemod[i] = gsub("/","", names[i])
+    namemod[i] = gsub(" ","_", names[i])
+  }
+  return(namemod)
+}
+```
+
+#### Simplifying gene sets names
+
+```{r}
+names(geneset) = nameshorter(names(geneset))
+names(geneset) = gsub("/","_",names(geneset))
+```
+
+#### Saving necessary objects to RDS files
+
+```{r}
+saveRDS(contr.matrix, "~/GitLab/GSE19728/contrast.rds")
+saveRDS(temp, "~/GitLab/GSE19728/elist.rds")
+saveRDS(geneset, "~/GitLab/GSE19728/geneset.rds")
+```
+
+
+#### Reading necessary objects (generated above) from RDS files
+
+```{r}
+elist = readRDS("~/GitLab/GSE19728/elist.rds")
+contrast = readRDS("~/GitLab/GSE19728/contrast.rds")
+geneset = readRDS("~/GitLab/GSE19728/geneset.rds")
+```
+
+
+
+#### Running coGSEA analysis 
+
+```{r}
+coGSEA(ElistObject = elist, contrastMatrix = contrast, ENTREZGenesIds = elist$genes$ENTREZ, geneSetCollection = geneset,specie = "Homo sapiens", directoryPath = "~/GitLab/GSE19728/results", alpha = 0.05, pvalAdjMethod = "BH", pvalCombMethod = "sumlog",min.intersection.size = 1, GSEA.Methods = c("camera", "gage","globaltest", "gsva", "ssgsea", "zscore", "ora", "padog", "roast","safe"), num.workers = 4, shinyMode = FALSE)
+
+```

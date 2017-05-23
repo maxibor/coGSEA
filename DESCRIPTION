@@ -1,0 +1,28 @@
+Package: coGSEA
+Title: coGSEA : comparison of Gene Set Enrichment Analysis methods
+Version: 0.0.1
+Authors@R: person("Maxime", "Borry", email = "maxime.borry@gmail.com", role = c("aut", "cre"))
+Description: comparison of GSEA methods on the ranks and pvalues of genesets. Largely inspired (and contains some code) by eGSEA package.
+License: MIT
+Encoding: UTF-8
+LazyData: false
+Depends:
+	R (>= 3.3.3),
+	parallel,
+	pheatmap,
+	FactoMineR,
+	corrplot,
+	UpSetR,
+	SuperExactTest,
+	ggplot2,
+	limma,
+	edgeR,
+	metap,
+	EGSEAdata,
+	gage,
+	globaltest,
+	GSVA,
+	PADOG,
+	safe,
+	knitr
+RoxygenNote: 6.0.1

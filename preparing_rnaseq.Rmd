@@ -1,0 +1,150 @@
+---
+title: "Preparing micro-array data for coGSEA analysis"
+output: html_notebook
+---
+
+$$\log{FC} = \frac{log{E_{S4}}}{log{E_{normal}}}$$
+
+
+## Reading and preparing data for [coGSEA](link) analysis.
+
+In this document, we will show you how to prepare RNA-seq data to perform a coGSEA analysis.  
+
+You can download this example dataset on the Gene Expression Omnibus database with the accession number [GSE63310](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE63310)    
+This dataset was analyzed in a very detailed [article](https://f1000research.com/articles/5-1408/v2) on how to do differential expression analysis that we strongly advise you to read.  
+The file you're looking for is : `GSE63310_RAW.tar`  
+
+#### Loading necessary packages
+
+```{r}
+library(edgeR)
+library(limma)
+library(Mus.musculus)
+library(coGSEA)
+```
+
+#### Reading files
+
+```{r}
+setwd("~/GitLab/GSE63310/data/")
+files <- c(
+"GSM1545535_10_6_5_11.txt",
+"GSM1545536_9_6_5_11.txt",   
+"GSM1545538_purep53.txt",
+"GSM1545539_JMS8-2.txt",
+"GSM1545540_JMS8-3.txt",
+"GSM1545541_JMS8-4.txt",
+"GSM1545542_JMS8-5.txt",
+"GSM1545544_JMS9-P7c.txt",
+"GSM1545545_JMS9-P8c.txt")
+x <- readDGE(files, columns=c(1,3))
+```
+
+#### Simplifying file names
+
+```{r}
+colnames(x) = substring(colnames(x), 12, nchar(colnames(x)))
+```
+
+#### Grouping by sample condition
+```{r}
+group <- as.factor(c("LP", "ML", "Basal", "Basal", "ML", "LP", "Basal", "ML", "LP"))
+x$samples$group <- group
+```
+
+#### Grouping by lane
+```{r}
+lane <- as.factor(rep(c("L004","L006","L008"), c(3,4,2)))
+x$samples$lane <- lane
+x$samples
+```
+
+#### Annotation
+```{r}
+geneid <- rownames(x)
+genes <- select(Mus.musculus, keys=geneid, columns=c("SYMBOL", "TXCHROM"),keytype="ENTREZID")
+dim(genes)
+head(genes)
+```
+
+#### Getting rid of duplicated annoations by keeping only the first one
+```{r}
+genes <- genes[!duplicated(genes$ENTREZID),]
+```
+
+#### Count per million of reads
+```{r}
+cpm <- cpm(x)
+```
+
+
+#### Removing genes lowly expressed  (genes with 0 expression across all samples)
+```{r}
+#Removing genes lowly expressed (genes with 0 expression across all samples)
+table(rowSums(x$counts==0)==9)
+
+keep.exprs <- rowSums(cpm>1)>=3
+x <- x[keep.exprs,, keep.lib.sizes=FALSE]
+dim(x)
+
+```
+
+#### Normlization with edgeR
+```{r}
+x <- calcNormFactors(x, method = "TMM")
+x$samples$norm.factors
+```
+
+#### Making the design matrix
+```{r}
+design <- model.matrix( ~ 0 + group + lane)
+colnames(design) <- gsub("group", "", colnames(design))
+rownames(design) = colnames(x)
+```
+
+#### Making the contrast matrix
+```{r}
+
+contr.matrix <- makeContrasts(
+  BasalvsLP = Basal-LP,
+  BasalvsML = Basal - ML,
+  LPvsML = LP - ML,
+  levels = colnames(design))
+
+contr.matrix
+
+```
+
+#### Applying voom transformation
+```{r}
+v <- voom(x, design, plot=F)
+v$genes$ENTREZ = rownames(v$E)
+```
+
+
+#### Saving objects
+
+```{r}
+saveRDS(v, "~/GitLab/GSE63310/elist.rds")
+saveRDS(contr.matrix, "~/GitLab/GSE63310/contrast.rds")
+```
+
+
+#### Reading RDS objects (previously genereated above)
+
+```{r}
+elist = readRDS("~/GitLab/GSE63310/elist.rds")
+contrast = readRDS("~/GitLab/GSE63310/contrast.rds")
+```
+
+
+#### Running coGSEA
+
+```{r}
+coGSEA(ElistObject = elist, contrastMatrix = contrast, ENTREZGenesIds = elist$genes$ENTREZ, geneSetCollection = "C2_KEGG",specie = "Mus musculus", directoryPath = "~/GitLab/GSE63310/results", alpha = 0.05, pvalAdjMethod = "BH", pvalCombMethod = "sumlog",min.intersection.size = 1, GSEA.Methods = c("camera", "gage","globaltest", "gsva", "ssgsea", "zscore", "ora", "padog", "roast","safe"), num.workers = 4, shinyMode = FALSE)
+
+```
+
+
+
+
