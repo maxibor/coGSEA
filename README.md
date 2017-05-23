@@ -1,5 +1,5 @@
 # coGSEA
-**co**mparative **G**ene **S**et **E**nrichment **Analysis**
+**co**mparative **G**ene **S**et **E**nrichment **A**nalysis
 
 ## Information
 
@@ -8,8 +8,7 @@ This version doesn't include the *SetRank* method for reason of package installa
 ## How to install
 
 ```
-require(devtools)
-devtools::install_git('https://mborry@gitlab.pasteur.fr/mborry/coGSEA.git')
+devtools::install_github("maxibor/coGSEA")
 ```
 
 ## Input files
