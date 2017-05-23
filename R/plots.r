@@ -93,7 +93,7 @@ resumPlot2 = function(preparedData, contrCondi, savePlot = TRUE, directoryPath= 
 
 cGSEAMakePlots = function(preparedData, directoryPath){
   base::dir.create(base::file.path(directoryPath,"/plots/"), showWarnings = FALSE)
-  for (condi in names(preparedData$result)){
+  for (condi in base::names(preparedData$result)){
     base::dir.create(file.path(directoryPath,"/plots/", condi), showWarnings = FALSE)
     clusteringPlot(preparedData = preparedData, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/"))
     pcaPlot(preparedData = preparedData, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/"))

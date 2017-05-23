@@ -15,6 +15,6 @@
 
 comparResumPlot = function(preparedData, savePlot = TRUE, legend = TRUE, directoryPath = directoryPath){
     print("Plotting Summary comparison Plot for all conditions")
-    generateSummaryPlots(comparisonSummaryData(preparedData), savePlot = savePlot, legend = legend, file.name = paste(directoryPath, "_comparison_sumplot", sep = ""), format = "pdf")
-    
+    generateSummaryPlots(preparedData$comparison, savePlot = savePlot, legend = legend, file.name = paste(directoryPath, "_comparison_sumplot", sep = ""), format = "pdf")
+
 }
