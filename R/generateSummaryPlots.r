@@ -20,8 +20,13 @@ generateSummaryPlots <- function(plot.data, file.name = "resumPlot", Xlab="-log1
         Ylab="Average Absolute logFC", format = NULL, firstN = 10,  savePlot = TRUE, legend = TRUE){
 
     tryCatch({
-        plot.data.sig = plot.data[plot.data[, "rank"] <= firstN, ]
-        sig.cols = rep("black", nrow(plot.data.sig))
+        # plot.data.sig = plot.data[plot.data[, "rank"] <= firstN, ]
+        # sig.cols = rep("black", nrow(plot.data.sig))
+
+        top.10.ids = as.character(plot.data[plot.data[, "rank"] <= firstN, "id"])
+        sig.ids = base::setdiff(plot.data[rank(-plot.data[,"sig"], na.last = TRUE) <= 5, "id"], top.10.ids)
+        sig.cols = c(rep("black", length(top.10.ids)), rep("blue", length(sig.ids)))
+        plot.data.sig = plot.data[match(c(top.10.ids, sig.ids), plot.data[, "id"]), ]
         if (min(plot.data[, "x.data"], na.rm=TRUE) > 0){
             xlimits = c(0.8 * min(plot.data[, "x.data"], na.rm=TRUE),
                 max(plot.data[, "x.data"], na.rm=TRUE)*1.05)
