@@ -492,7 +492,7 @@ genes_in_gs = function(geneset_collection, gene_list){
 prepareData = function(cGSEAcoreOutput, alpha = 0.05, directoryPath, pvalAdjMethod = "BH", pvalCombMethod = "sumlog", min.intersection.size = 1, shinyMode = FALSE){
   #Saving genesets and genes to a file
 
-  genecollec = genes_in_gs(geneset_collection = cGSEAcoreOutput$collection, gene_list = base::rownames(cGSEAcoreOutpout$Elist$E))
+  genecollec = genes_in_gs(geneset_collection = cGSEAcoreOutput$collection, gene_list = base::rownames(cGSEAcoreOutput$Elist$E))
   base::sink(paste(directoryPath,"/geneset_collection_genes.txt", sep = ""))
   writeLines(paste(names(genecollec),unlist(lapply(genecollec, paste, collapse="\t")), sep = " \t "))
   sink()
