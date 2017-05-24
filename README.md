@@ -10,7 +10,7 @@ specie = "Mus musculus", directoryPath = "/path/to/existing/dir")
 
 ```
 # Introduction
-**coGSEA** (**co**mparative **G**ene **S**et **E**nrichment **A**nalysis) is a tool developped to help you compare and combine up to 12 different methods of Gene Set Enrichment Analsysis.
+**coGSEA** (**co**mparative **G**ene **S**et **E**nrichment **A**nalysis) is a **R** package developped to help you compare and combine up to 12 different methods of Gene Set Enrichment Analsysis.
 In the current version, those 12 methods include :
 - [camera](http://www.bioconductor.org/packages/release/bioc/html/limma.html)
 - [gage](https://bioconductor.org/packages/release/bioc/html/gage.html)

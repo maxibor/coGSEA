@@ -3,7 +3,7 @@
 
 ### Introduction
 
-**coGSEA** (**co**mparative **G**ene **S**et **E**nrichment **A**nalysis) is a tool developped to help you compare up to 12 different methods of GSEA.
+**coGSEA** (**co**mparative **G**ene **S**et **E**nrichment **A**nalysis) is a R package developped to help you compare up to 12 different methods of GSEA.
 In the current version, those 12 methods include :
 - [camera](http://www.bioconductor.org/packages/release/bioc/html/limma.html)
 - [gage](https://bioconductor.org/packages/release/bioc/html/gage.html)
