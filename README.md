@@ -1,13 +1,18 @@
 # coGSEA
 **co**mparative **G**ene **S**et **E**nrichment **A**nalysis
 
-## Information
+# Quick start
 
-This version doesn't include the *SetRank* method for reason of package installation speeed optimization. To include it, you can use the 	[coGSEA_SetRank](https://gitlab.pasteur.fr/mborry/coGSEA_SetRank) version of this package.
-
-## How to install
+```{r}
+coGSEA(ElistObject = elist, contrastMatrix = contrast,
+ENTREZGenesId = elist$genes$ENTREZ, geneSetCollection = "H",
+specie = "Mus musculus", directoryPath = "/path/to/existing/dir")
 
 ```
+
+# How to install
+
+```{r}
 devtools::install_github("maxibor/coGSEA")
 ```
 
