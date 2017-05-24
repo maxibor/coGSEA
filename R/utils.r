@@ -480,6 +480,10 @@ combineRanks = function(resTable){
 
 
 prepareData = function(cGSEAcoreOutput, alpha = 0.05, directoryPath, pvalAdjMethod = "BH", pvalCombMethod = "sumlog", min.intersection.size = 1, shinyMode = FALSE){
+  #Saving genesets and genes to a file
+  sink(paste(directoryPath,"/geneset_collection_genes.txt", sep = ""))
+  writeLines(paste(names(cGSEAcoreOutput$collection),unlist(lapply(cGSEAcoreOutput$collection, paste, collapse="\t")), sep = " \t "))
+  sink()
 
   logFCTable = getlogFCFromLMFit(voom.results = cGSEAcoreOutput$Elist, contrast = cGSEAcoreOutput$contrast, logFC.cutoff = 0, fdr.cutoff = 1)
 
