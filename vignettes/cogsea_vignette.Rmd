@@ -11,6 +11,8 @@ vignette: >
 
 # Quick start
 
+<img src="../logo.png" width="300">
+
 ```{r, eval = FALSE}
 coGSEA(ElistObject = elist, contrastMatrix = contrast,
 ENTREZGenesId = elist$genes$ENTREZ, geneSetCollection = "H",
