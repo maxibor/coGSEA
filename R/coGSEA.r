@@ -7,7 +7,7 @@
 #' @param specie  Mus musculus or Homo sapiens, default to Mus Musculus (character).
 #' @param ENTREZGenesIds  vector of gene ENTREZ identifiers.
 #' @param directoryPath  path to existing directory where to save the results ("character").
-#' @param alpha  alpha treshold, default to 0.05 (numeric).
+#' @param alpha  alpha threshold, default to 0.05 (numeric).
 #' @param pvalAdjMethod  p.value adjustment method (character).
 #' @param pvalCombMethod  p.value combination method (character).
 #' @param min.intersection.size  minimum intersection size for SnailPlot (integer)

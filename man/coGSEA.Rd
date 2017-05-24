@@ -24,7 +24,7 @@ coGSEA(ElistObject, contrastMatrix, ENTREZGenesIds, geneSetCollection = "H",
 
 \item{directoryPath}{path to existing directory where to save the results ("character").}
 
-\item{alpha}{alpha treshold, default to 0.05 (numeric).}
+\item{alpha}{alpha threshold, default to 0.05 (numeric).}
 
 \item{pvalAdjMethod}{p.value adjustment method (character).}
 
