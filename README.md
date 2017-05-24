@@ -1,5 +1,5 @@
-# coGSEA : **co**mparative **G**ene **S**et **E**nrichment **A**nalysis
-
+![](./logo.png)
+------ 
 ## Table of Content
 
 * [Quick start](#quick-start)
