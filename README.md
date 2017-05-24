@@ -1,5 +1,4 @@
-# coGSEA
-**co**mparative **G**ene **S**et **E**nrichment **A**nalysis
+# coGSEA : **co**mparative **G**ene **S**et **E**nrichment **A**nalysis
 
 # Quick start
 
