@@ -1,5 +1,18 @@
 # coGSEA : **co**mparative **G**ene **S**et **E**nrichment **A**nalysis
 
+## Table of Content
+
+* [Quick start](#quick-start)
+* [Introduction](#introduction)
+* [How to install](#how-to-install)
+* [Inputs](#inputs)
+* [Parameters](#parameters)
+* [Data preparation for running coGSEA](#data-preparation-for-running-cogsea)
+   * [MicroArray data](#microarray-data)
+
+   * [RNAseq data](#rnaseq-data)
+
+
 # Quick start
 
 ``` r
