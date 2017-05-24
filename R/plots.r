@@ -91,6 +91,15 @@ resumPlot2 = function(preparedData, contrCondi, savePlot = TRUE, directoryPath= 
 
 }
 
+
+rank_pval_corplot = function(preparedData, contrCondi, savePlot = TRUE, directoryPath = directoryPath){
+    print(paste("Plotting rank-pvalue correlation plot for condition", contrCondi))
+    corcoef = stats::cor(-log10(as.numeric(preparedData$result[[contrCondi]]$combined_p.value)),as.numeric(preparedData$result[[contrCondi]]$Avg_Rank))
+    pdf(paste(directoryPath, contrCondi, "_rank_pval_corplot.pdf", sep = ""), width = 10, height = 7, useDingbats = FALSE)
+    graphics::plot(-log10(as.numeric(preparedData$result[[contrCondi]]$combined_p.value)),as.numeric(preparedData$result[[contrCondi]]$Avg_Rank), xlab = "-log10(p value)", ylab = "rank", main = paste("Correlation coefficient : ", corcoef))
+    dev.off()
+}
+
 cGSEAMakePlots = function(preparedData, directoryPath){
   base::dir.create(base::file.path(directoryPath,"/plots/"), showWarnings = FALSE)
   for (condi in base::names(preparedData$result)){
@@ -103,6 +112,7 @@ cGSEAMakePlots = function(preparedData, directoryPath){
     snailPlot(preparedData = preparedData, min.intersection.size = preparedData$minIntersectionSize, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/"))
     # resumPlot1(preparedData = preparedData, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/"))
     resumPlot2(preparedData = preparedData, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/"))
+    rank_pval_corplot(preparedData = preparedData, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/"))
   }
   runTimePlot(preparedData = preparedData, directoryPath = paste0(directoryPath,"/plots/"))
   comparResumPlot(preparedData = preparedData, directoryPath = paste0(directoryPath,"/plots/"))
