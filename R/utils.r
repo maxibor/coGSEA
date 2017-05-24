@@ -478,11 +478,23 @@ combineRanks = function(resTable){
     return(base::cbind(resTable, base::as.numeric(meanRank)))
 }
 
+genes_in_gs = function(geneset_collection, gene_list){
+
+    gs_check = sapply(geneset_collection, function(x) x %in% gene_list)
+
+    for (i in 1:length(names(geneset_collection))){
+        geneset_collection[[i]] = geneset_collection[[i]][gs_check[[i]]]
+    }
+
+    return(geneset_collection)
+}
 
 prepareData = function(cGSEAcoreOutput, alpha = 0.05, directoryPath, pvalAdjMethod = "BH", pvalCombMethod = "sumlog", min.intersection.size = 1, shinyMode = FALSE){
   #Saving genesets and genes to a file
-  sink(paste(directoryPath,"/geneset_collection_genes.txt", sep = ""))
-  writeLines(paste(names(cGSEAcoreOutput$collection),unlist(lapply(cGSEAcoreOutput$collection, paste, collapse="\t")), sep = " \t "))
+
+  genecollec = genes_in_gs(geneset_collection = cGSEAcoreOutput$collection, gene_list = base::rownames(cGSEAcoreOutpout$Elist$E))
+  base::sink(paste(directoryPath,"/geneset_collection_genes.txt", sep = ""))
+  writeLines(paste(names(genecollec),unlist(lapply(genecollec, paste, collapse="\t")), sep = " \t "))
   sink()
 
   logFCTable = getlogFCFromLMFit(voom.results = cGSEAcoreOutput$Elist, contrast = cGSEAcoreOutput$contrast, logFC.cutoff = 0, fdr.cutoff = 1)
