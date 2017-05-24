@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>coGSEA</title>
+
+        <link rel="stylesheet" href="./css/bootstrap.min.css">
+        <link rel="stylesheet" href="./css/font-awesome.min.css">
+        <link rel="stylesheet" href="./css/highlight.tomorrow-night.css">
+        <link rel="stylesheet" href="./css/main.css">
+    </head>
+    <body>
+
+        <header class="navbar navbar-default navbar-fixed-top">
+
+            <a class="navbar-brand" href="http://maxibor.github.io/coGSEA/">
+                coGSEA
+                <small class="hidden-xs hidden-sm">
+                    comparative Gene Set Enrichment Analysis
+                </small>
+            </a>
+
+                            <a href="https://github.com/maxibor/coGSEA">
+                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+                </a>
+
+        </header>
+
+        <main class="container-fluid">
+            <div class="row">
+
+
+                    <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+
+                                                    <p class="text-muted">
+                                Menu
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                    <li class="">
+                                        <a href="#quick-start">Quick start</a>
+                                    </li>
+                                    <li class="">
+                                        <a href="#introduction">Introduction</a>
+                                    </li>
+                                    <li class="">
+                                        <a href="#how-to-install">How to install</a>
+                                    </li>
+                                    <li class="">
+                                        <a href="#inputs">Inputs</a>
+                                    </li>
+                                    <li class="">
+                                        <a href="#parameters">Parameters</a>
+                                    </li>
+                                    <li class="">
+                                        <a href="#microarray-data">Preparing micro-array data</a>
+                                    </li>
+                                    <li class="">
+                                        <a href="#rnaseq-data">Preparing RNA-seq data</a>
+                                    </li>
+
+                                </ul>
+                                <p class="text-muted">
+                                    <a href="https://github.com/maxibor/coGSEA">GitHub Reposity</a>
+                                </p>
+                                <p class = "text-muted">
+                                    <a href="https://github.com/maxibor/coGSEA_shiny">Shiny GUI</a>
+                                </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                            </ul>
+
+                    </nav>
+
+
+                <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+<img src="./logo.png" width="300">
+<h1 id="quick-start">Quick start</h1>
+<pre><code class="language-r">coGSEA(ElistObject = elist, contrastMatrix = contrast,
+ENTREZGenesId = elist$genes$ENTREZ, geneSetCollection = "H",
+specie = "Mus musculus", directoryPath = "/path/to/existing/dir")
+</code></pre>
+<h1 id="introduction">Introduction</h1>
+<p><strong>coGSEA</strong> (<strong>co</strong>mparative <strong>G</strong>ene <strong>S</strong>et <strong>E</strong>nrichment <strong>A</strong>nalysis) is a <strong>R</strong> package developped to help you compare and combine up to 12 different methods of Gene Set Enrichment Analsysis.
+In the current version, those 12 methods include :</p>
+<ul>
+<li><a href="http://www.bioconductor.org/packages/release/bioc/html/limma.html">camera</a></li>
+<li><a href="https://bioconductor.org/packages/release/bioc/html/gage.html">gage</a></li>
+<li><a href="https://bioconductor.org/packages/release/bioc/html/globaltest.html">globaltest</a></li>
+<li><a href="https://bioconductor.org/packages/release/bioc/html/GSVA.html">gsva</a></li>
+<li><a href="https://bioconductor.org/packages/release/bioc/html/GSVA.html">ssgsea</a></li>
+<li><a href="https://bioconductor.org/packages/release/bioc/html/GSVA.html">zscore</a></li>
+<li><a href="https://bioconductor.org/packages/release/bioc/html/GSVA.html">plage</a></li>
+<li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3134237/">ora</a></li>
+<li><a href="http://bioconductor.org/packages/release/bioc/html/PADOG.html">padog</a></li>
+<li><a href="http://www.bioconductor.org/packages/release/bioc/html/limma.html">roast</a></li>
+<li><a href="http://bioconductor.org/packages/release/bioc/html/safe.html">safe</a></li>
+<li><a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1571-6">setrank</a></li>
+</ul>
+<p><strong>Disclaimer</strong> : This tool is largely inspired by the <a href="http://bioconductor.org/packages/release/bioc/html/EGSEA.html">eGSEA</a> R package (and contains some of its code)</p>
+<h1 id="how-to-install">How to install</h1>
+<pre><code class="language-r">devtools::install_github("maxibor/coGSEA",build_vignettes = TRUE)</code></pre>
+<h1 id="inputs">Inputs</h1>
+<ul>
+<li>
+<p><strong>ElistObject</strong> : a Elist object. Your Elist object must be either a <em>limma-voom</em> object in case of RNAseq data, or have a estimated dispersion in case of MicroArray data. Dispersion estimates can be performed using the <code>estimateDisp()</code> function from the <em>edgeR</em> package.</p>
+</li>
+<li>
+<p><strong>contrastMatrix</strong> : the contrast matrix object for your experiment. For some help to make a contrast matrix, you can check the vignette of the limma package.</p>
+</li>
+<li><strong>ENTREZGenesIds</strong> : the Elist object containing the ENTREZ gene identifiers. For example <code>elist$genes$ENTREZ</code></li>
+</ul>
+<h1 id="parameters">Parameters</h1>
+<ul>
+<li>
+<p><strong>geneSetCollection</strong> : A geneset collection from the <a href="http://software.broadinstitute.org/gsea/msigdb">MSigDB</a> database. Currently only three are supported : <code>H</code> (Hallmark) and two subset of <code>C2_KEGG</code> and <code>C2_REACTOME</code>(Kegg and Reactome). You can also use your own geneset collection. In this case, you need to provide an list object with genesets and genes. Such an example file can be found <a href="./exampleData/geneset.rds">here</a></p>
+</li>
+<li>
+<p><strong>Specie</strong> : The organism from which the data were extracted. Currently only <code>Homo sapiens</code> and <code>Mus musculus</code> are supported. Default : <code>Mus musculus</code></p>
+</li>
+<li>
+<p><strong>directoryPath</strong> : a path to an existing directory where coGSEA results and plots will be saved. Default : <code>"./"</code><br />
+Example :  <code>"~/coGSEA_results"</code></p>
+</li>
+<li>
+<p><strong>alpha</strong> : Alpha <em>p</em> value threshold. Default : <code>0.05</code><br />
+example : <code>0.05</code></p>
+</li>
+<li>
+<p><strong>pvalAdjMethod</strong> : <em>p</em> value adjustment method for multiple testing. Default : <code>BH</code>.<br />
+To select among the following methods :</p>
+<ul>
+<li><code>holm</code></li>
+<li><code>hochberg</code></li>
+<li><code>hommel</code></li>
+<li><code>bonferroni</code></li>
+<li><code>BH</code> (Benjamini Hochberg)</li>
+<li><code>BY</code> (Benjamini Yekutieli)</li>
+<li><code>fdr</code> (False Discovery rate)</li>
+<li><code>none</code>  </li>
+</ul>
+</li>
+<li>
+<p><strong>pvalCombMethod</strong> : the method to combine all the p.values of one geneset accros the different GSEA methods. Default : <code>sumlog</code><br />
+To select among the following methods :</p>
+<ul>
+<li><code>sumz</code> (sum z method)</li>
+<li><code>votep</code> (vote counting method)</li>
+<li><code>minimump</code> (Wilkinson's method)</li>
+<li><code>sumlog</code> (Fisher's method) - selected by default</li>
+<li><code>sump</code> (sum p method)</li>
+<li><code>logitp</code> (logit method)</li>
+<li><code>meanp</code> (mean p method)</li>
+<li><code>maximump</code> (Wilkinson's method)</li>
+</ul>
+</li>
+<li>
+<p><strong>min.intersection.size</strong> : Graphical Parameter to select the minimum size of an intersection of genesets between different methods. Default : <code>1</code><br />
+Example : <code>2</code></p>
+</li>
+<li>
+<p><strong>GSEA.Methods</strong> : between 1 and 12 methods to select from the methods listed in the introduction. Default : <code>c("camera", "gage","globaltest", "gsva", "ssgsea", "zscore", "plage", "ora", "padog", "roast","safe")</code><br />
+Example : <code>c("camera", "gage","globaltest")</code>  </p>
+</li>
+<li>
+<p><strong>num.workers</strong> : number of thread for multithreading to decrease execution time. Default : <code>4</code><br />
+Example : <code>4</code></p>
+</li>
+<li><strong>shinyMode</strong> : Boolean value. Shouldn't be changed. Only used when running coGSEA is running in the background of a shiny application. Default : <code>FALSE</code></li>
+</ul>
+<h1 id="data-preparation-for-running-cogsea">Data preparation for running coGSEA</h1>
+<h2 id="microarray-data">MicroArray data</h2>
+<p>This example dataset is from a <a href="https://www.ncbi.nlm.nih.gov/pubmed/21836821">article</a> about Astrocymotas tumors published in 2011 by Liu et al.  </p>
+<p>You can download it on the Gene Expression Omnibus database with the accession number <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19728">GSE19728</a>  </p>
+<h4 id="loading-the-necessary-packages-for-this-analysis">Loading the necessary packages for this analysis</h4>
+<pre><code class="language-r">library(affy)
+library(hgu133plus2.db)
+library(edgeR)
+library(gage)
+library(coGSEA)</code></pre>
+<h4 id="loading-the-cel-files-and-normalizing-them-usin">Loading the CEL FILES and Normalizing them usin <code>rma</code></h4>
+<pre><code class="language-r">setwd("~/GitLab/GSE19728/data/")
+celfiles = ReadAffy()
+celfiles = rma(celfiles)</code></pre>
+<h4 id="getting-the-expression-data-and-the-probe-names">Getting the expression data, and the Probe Names</h4>
+<pre><code class="language-r">
+intensity = exprs(celfiles)
+intensity = cbind(rownames(intensity), intensity)
+colnames(intensity)[1] = "PROBEID"
+intensity = as.data.frame(intensity)
+intensity$PROBEID = as.character(intensity$PROBEID)</code></pre>
+<h4 id="getting-the-annotations-of-probes-ids-to-entrez-accession-numbers">Getting the annotations of Probes IDS to ENTREZ accession numbers</h4>
+<pre><code class="language-r">annots = select(hgu133plus2.db, intensity$PROBEID, "ENTREZID", "PROBEID")</code></pre>
+<h4 id="merge-expression-matrix-and-annotation">Merge expression matrix and annotation</h4>
+<pre><code class="language-r">res = merge(intensity, annots, by= "PROBEID")
+</code></pre>
+<h4 id="getting-rid-of-probe-ids-and-type-casting">Getting rid of PROBE ids and type casting</h4>
+<pre><code class="language-r">resmin = res[,2:ncol(res)]
+cname = colnames(resmin)
+resmin = apply(resmin, 2, as.numeric)
+colnames(resmin)= cname
+resmin = as.data.frame(resmin)</code></pre>
+<h4 id="aggregating-the-probes-matching-the-same-entrez-accession-number-by-averaging-them-and-applying-a-log-transformation">Aggregating the PROBES matching the same ENTREZ accession number by averaging them and applying a log transformation</h4>
+<pre><code class="language-r">result = aggregate(. ~ ENTREZID, resmin, mean)
+result$ENTREZID = levels(as.factor(as.character(resmin$ENTREZID)))
+rownames(result) = result$ENTREZID
+result = result[,-1]
+result = log(result)</code></pre>
+<h4 id="visualizing-in-boxplot-to-check-normalization">Visualizing in boxplot to check normalization</h4>
+<pre><code class="language-r">boxplot(result, las = 2)</code></pre>
+<h4 id="changing-column-names-to-remove-the">Changing column names to remove the <code>.CEL</code> filename extension</h4>
+<pre><code class="language-r">colnames(result) = gsub(".CEL","", colnames(result))
+print(colnames(result))</code></pre>
+<h4 id="selecting-only-the-samples-we-are-interested-in">Selecting only the samples we are interested in</h4>
+<pre><code class="language-r">result2 = cbind(result$GSM492649_Astrocytomas_N, result$GSM525014, result$GSM525015, result$GSM525016, result$`GSM492662_Astrocytomas_T4-1`, result$`GSM492663_Astrocytomas_T4-2` , result$`GSM492664_Astrocytomas_T4-3`, result$`GSM492665_Astrocytomas_T4-4`, result$`GSM492666_Astrocytomas_T4-5`)
+colnames(result2) = c("GSM492649_Astrocytomas_N", "GSM525014", "GSM525015", "GSM525016","GSM492662_Astrocytomas_T4-1", "GSM492663_Astrocytomas_T4-2", "GSM492664_Astrocytomas_T4-3", "GSM492665_Astrocytomas_T4-4", "GSM492666_Astrocytomas_T4-5" )
+rownames(result2) = rownames(result)</code></pre>
+<h4 id="preparing-the-design-matrix">Preparing the design matrix</h4>
+<pre><code class="language-r">Normal = c(rep(1,4),rep(0,5))
+Tumor = c(rep(0,4),rep(1,5))
+design = cbind(Normal, Tumor)
+rownames(design) = colnames(result2)</code></pre>
+<h4 id="preparing-the-contrast-matrix">Preparing the contrast matrix</h4>
+<pre><code class="language-r">contr.matrix = makeContrasts(NormalVSTumor = Normal - Tumor, levels = design)</code></pre>
+<h4 id="preparing-expression-list-object">Preparing expression list object</h4>
+<pre><code class="language-r">temp = new("EList")
+temp$design = design
+temp$E = as.matrix(result2)
+rownames(temp$E) = as.numeric(rownames(temp$E))
+temp$genes$ENTREZ = rownames(result2)
+temp$common.dispersion = estimateDisp(temp$E, design = temp$design)$common.dispersion
+temp$samples = colnames(result2)</code></pre>
+<h4 id="preparing-gene-set-collection">Preparing gene set collection</h4>
+<pre><code class="language-r">gs = gage::kegg.gsets(species = "hsa", id.type = "entrez")
+geneset = gs$kg.sets</code></pre>
+<p>Some GSEA methods do not work properly with exotic gene names, so we need to simplify them  </p>
+<h4 id="function-for-simplifying-gene-sets-names">Function for simplifying gene sets names</h4>
+<pre><code class="language-r">nameshorter = function(names){
+  namemod = c()
+  for (i in seq(1,length(names))){
+    namemod[i] = paste(strsplit(names[i], " ")[[1]][-1], sep = "", collapse = " ")
+    namemod[i] = gsub("/","", names[i])
+    namemod[i] = gsub(" ","_", names[i])
+  }
+  return(namemod)
+}</code></pre>
+<h4 id="simplifying-gene-sets-names">Simplifying gene sets names</h4>
+<pre><code class="language-r">names(geneset) = nameshorter(names(geneset))
+names(geneset) = gsub("/","_",names(geneset))</code></pre>
+<h4 id="saving-necessary-objects-to-rds-files">Saving necessary objects to RDS files</h4>
+<pre><code class="language-r">saveRDS(contr.matrix, "~/GitLab/GSE19728/contrast.rds")
+saveRDS(temp, "~/GitLab/GSE19728/elist.rds")
+saveRDS(geneset, "~/GitLab/GSE19728/geneset.rds")</code></pre>
+<h4 id="reading-necessary-objects-generated-above-from-rds-files">Reading necessary objects (generated above) from RDS files</h4>
+<pre><code class="language-r">elist = readRDS("~/GitLab/GSE19728/elist.rds")
+contrast = readRDS("~/GitLab/GSE19728/contrast.rds")
+geneset = readRDS("~/GitLab/GSE19728/geneset.rds")</code></pre>
+<h4 id="running-cogsea-analysis">Running coGSEA analysis</h4>
+<pre><code class="language-r">coGSEA(ElistObject = elist, contrastMatrix = contrast, ENTREZGenesIds = elist$genes$ENTREZ, geneSetCollection = geneset,specie = "Homo sapiens", directoryPath = "~/GitLab/GSE19728/results", alpha = 0.05, pvalAdjMethod = "BH", pvalCombMethod = "sumlog",min.intersection.size = 1, GSEA.Methods = c("camera", "gage","globaltest", "gsva", "ssgsea", "zscore", "ora", "padog", "roast","safe"), num.workers = 4, shinyMode = FALSE)
+</code></pre>
+<h2 id="rnaseq-data">RNAseq data</h2>
+<p>You can download this example dataset on the Gene Expression Omnibus database with the accession number <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE63310">GSE63310</a>.<br />
+This dataset was analyzed in a very detailed <a href="https://f1000research.com/articles/5-1408/v2">article</a> on how to do differential expression analysis that we strongly advise you to read.<br />
+The file you're looking for is : <code>GSE63310_RAW.tar</code>  </p>
+<h4 id="loading-necessary-packages">Loading necessary packages</h4>
+<pre><code class="language-r">library(edgeR)
+library(limma)
+library(Mus.musculus)
+library(coGSEA)</code></pre>
+<h4 id="reading-files">Reading files</h4>
+<pre><code class="language-r">setwd("~/GitLab/GSE63310/data/")
+files &lt;- c(
+"GSM1545535_10_6_5_11.txt",
+"GSM1545536_9_6_5_11.txt",
+"GSM1545538_purep53.txt",
+"GSM1545539_JMS8-2.txt",
+"GSM1545540_JMS8-3.txt",
+"GSM1545541_JMS8-4.txt",
+"GSM1545542_JMS8-5.txt",
+"GSM1545544_JMS9-P7c.txt",
+"GSM1545545_JMS9-P8c.txt")
+x &lt;- readDGE(files, columns=c(1,3))</code></pre>
+<h4 id="simplifying-file-names">Simplifying file names</h4>
+<pre><code class="language-r">colnames(x) = substring(colnames(x), 12, nchar(colnames(x)))</code></pre>
+<h4 id="grouping-by-sample-condition">Grouping by sample condition</h4>
+<pre><code class="language-r">group &lt;- as.factor(c("LP", "ML", "Basal", "Basal", "ML", "LP", "Basal", "ML", "LP"))
+x$samples$group &lt;- group</code></pre>
+<h4 id="grouping-by-lane">Grouping by lane</h4>
+<pre><code class="language-r">lane &lt;- as.factor(rep(c("L004","L006","L008"), c(3,4,2)))
+x$samples$lane &lt;- lane
+x$samples</code></pre>
+<h4 id="annotation">Annotation</h4>
+<pre><code class="language-r">geneid &lt;- rownames(x)
+genes &lt;- select(Mus.musculus, keys=geneid, columns=c("SYMBOL", "TXCHROM"),keytype="ENTREZID")
+dim(genes)
+head(genes)</code></pre>
+<h4 id="getting-rid-of-duplicated-annoations-by-keeping-only-the-first-one">Getting rid of duplicated annoations by keeping only the first one</h4>
+<pre><code class="language-r">genes &lt;- genes[!duplicated(genes$ENTREZID),]</code></pre>
+<h4 id="count-per-million-of-reads">Count per million of reads</h4>
+<pre><code class="language-r">cpm &lt;- cpm(x)</code></pre>
+<h4 id="removing-genes-lowly-expressed--genes-with-0-expression-across-all-samples">Removing genes lowly expressed  (genes with 0 expression across all samples)</h4>
+<pre><code class="language-r">#Removing genes lowly expressed (genes with 0 expression across all samples)
+table(rowSums(x$counts==0)==9)
+
+keep.exprs &lt;- rowSums(cpm&gt;1)&gt;=3
+x &lt;- x[keep.exprs,, keep.lib.sizes=FALSE]
+dim(x)
+</code></pre>
+<h4 id="normlization-with-edger">Normlization with edgeR</h4>
+<pre><code class="language-r">x &lt;- calcNormFactors(x, method = "TMM")
+x$samples$norm.factors</code></pre>
+<h4 id="making-the-design-matrix">Making the design matrix</h4>
+<pre><code class="language-r">design &lt;- model.matrix( ~ 0 + group + lane)
+colnames(design) &lt;- gsub("group", "", colnames(design))
+rownames(design) = colnames(x)</code></pre>
+<h4 id="making-the-contrast-matrix">Making the contrast matrix</h4>
+<pre><code class="language-r">
+contr.matrix &lt;- makeContrasts(
+  BasalvsLP = Basal-LP,
+  BasalvsML = Basal - ML,
+  LPvsML = LP - ML,
+  levels = colnames(design))
+
+contr.matrix
+</code></pre>
+<h4 id="applying-voom-transformation">Applying voom transformation</h4>
+<pre><code class="language-r">v &lt;- voom(x, design, plot=F)
+v$genes$ENTREZ = rownames(v$E)</code></pre>
+<h4 id="saving-objects">Saving objects</h4>
+<pre><code class="language-r">saveRDS(v, "~/GitLab/GSE63310/elist.rds")
+saveRDS(contr.matrix, "~/GitLab/GSE63310/contrast.rds")</code></pre>
+<h4 id="reading-rds-objects-previously-genereated-above">Reading RDS objects (previously genereated above)</h4>
+<pre><code class="language-r">elist = readRDS("~/GitLab/GSE63310/elist.rds")
+contrast = readRDS("~/GitLab/GSE63310/contrast.rds")</code></pre>
+<h4 id="running-cogsea">Running coGSEA</h4>
+<pre><code class="language-r">coGSEA(ElistObject = elist, contrastMatrix = contrast, ENTREZGenesIds = elist$genes$ENTREZ, geneSetCollection = "C2_KEGG",specie = "Mus musculus", directoryPath = "~/GitLab/GSE63310/results", alpha = 0.05, pvalAdjMethod = "BH", pvalCombMethod = "sumlog",min.intersection.size = 1, GSEA.Methods = c("camera", "gage","globaltest", "gsva", "ssgsea", "zscore", "ora", "padog", "roast","safe"), num.workers = 4, shinyMode = FALSE)
+</code></pre>
+                </section>
+
+            </div>
+        </main>
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="//yandex.st/highlightjs/7.5/highlight.min.js"></script>
+
+        <script>
+            $(function() {
+                $("section>h1").wrap('<div class="page-header" />');
+                // Syntax highlighting
+                hljs.initHighlightingOnLoad();
+            });
+        </script>
+
+    </body>
+</html>
