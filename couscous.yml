@@ -2,12 +2,12 @@ template:
     url: https://github.com/CouscousPHP/Template-Dark
 
 # Base URL of the published website
-baseUrl: http://username.github.io/project
+baseUrl: http://maxibor.github.io/coGSEA
 
 # Used to link to the GitHub project
 github:
-    user: myself
-    repo: my-project
+    user: maxibor
+    repo: coGSEA
 
 title: coGSEA
 subTitle: comparative Gene Set Enrichment Analysis
