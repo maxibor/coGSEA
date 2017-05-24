@@ -6,16 +6,16 @@
 
         <title>coGSEA</title>
 
-        <link rel="stylesheet" href="http://maxibor.github.io/coGSEA/css/bootstrap.min.css">
-        <link rel="stylesheet" href="http://maxibor.github.io/coGSEA/css/font-awesome.min.css">
-        <link rel="stylesheet" href="http://maxibor.github.io/coGSEA/css/highlight.tomorrow-night.css">
-        <link rel="stylesheet" href="http://maxibor.github.io/coGSEA/css/main.css">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/css/highlight.tomorrow-night.css">
+        <link rel="stylesheet" href="/css/main.css">
     </head>
     <body>
 
         <header class="navbar navbar-default navbar-fixed-top">
 
-            <a class="navbar-brand" href="http://maxibor.github.io/coGSEA/">
+            <a class="navbar-brand" href="/">
                 coGSEA
                 <small class="hidden-xs hidden-sm">
                     comparative Gene Set Enrichment Analysis
@@ -40,7 +40,7 @@
 
                             <ul class="nav nav-pills nav-stacked">
                                                                     <li class="">
-                                        <a href="http://maxibor.github.io/coGSEA/Introduction">
+                                        <a href="/Introduction">
                                             Home page
                                         </a>
                                     </li>
@@ -338,6 +338,11 @@ contrast = readRDS("~/GitLab/GSE63310/contrast.rds")</code></pre>
                 hljs.initHighlightingOnLoad();
             });
         </script>
-
+        <!-- Livereload -->
+        <script>
+            document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+                    ':35729/livereload.js?snipver=1"></' + 'script>')
+        </script>
+        <!-- End Livereload -->
     </body>
 </html>
