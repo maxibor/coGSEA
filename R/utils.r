@@ -494,7 +494,7 @@ prepareData = function(cGSEAcoreOutput, alpha = 0.05, directoryPath, pvalAdjMeth
 
   genecollec = genes_in_gs(geneset_collection = cGSEAcoreOutput$collection, gene_list = base::rownames(cGSEAcoreOutput$Elist$E))
   base::sink(paste(directoryPath,"/geneset_collection_genes.txt", sep = ""))
-  writeLines(paste(names(genecollec),unlist(lapply(genecollec, paste, collapse="\t")), sep = " \t "))
+  writeLines(paste(names(genecollec),unlist(lapply(genecollec, paste, collapse=",")), sep = ","))
   sink()
 
   logFCTable = getlogFCFromLMFit(voom.results = cGSEAcoreOutput$Elist, contrast = cGSEAcoreOutput$contrast, logFC.cutoff = 0, fdr.cutoff = 1)
