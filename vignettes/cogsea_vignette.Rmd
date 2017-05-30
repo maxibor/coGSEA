@@ -11,6 +11,19 @@ vignette: >
 
 <img src="../logo.png" width="300">  
 
+## Table of Content
+
+* [Quick start](#quick-start)
+* [Introduction](#introduction)
+* [How to install](#how-to-install)
+* [Inputs](#inputs)
+* [Parameters](#parameters)
+* [Data preparation for running coGSEA](#data-preparation-for-running-cogsea)
+   * [MicroArray data](#microarray-data)
+   * [RNAseq data](#rnaseq-data)
+* [Output](#output)
+
+
 # Quick start
 
 ```{r, eval = FALSE}
@@ -412,3 +425,36 @@ contrast = readRDS("~/GitLab/GSE63310/contrast.rds")
 coGSEA(ElistObject = elist, contrastMatrix = contrast, ENTREZGenesIds = elist$genes$ENTREZ, geneSetCollection = "C2_KEGG",specie = "Mus musculus", directoryPath = "~/GitLab/GSE63310/results", alpha = 0.05, pvalAdjMethod = "BH", pvalCombMethod = "sumlog",min.intersection.size = 1, GSEA.Methods = c("camera", "gage","globaltest", "gsva", "ssgsea", "zscore", "ora", "padog", "roast","safe"), num.workers = 4, shinyMode = FALSE)
 
 ```
+
+# Output
+**Files**
+
+- `abbreviations_[condition_name].csv`: gene-sets abbreviations mapping to gene-sets accession numbers and names.
+
+- `geneset_collection_genes.csv`: genes of the dataset present in the gene-sets
+
+- `result_[condition_name].csv`: result table with indivudual methods ranking, p.value, adjusted p.value. Average ranks, Average logFC, and combined p.value  
+
+**Plots**
+
+- `coGSEA_methods_runtime.pdf`: barplot of the runtime of the different GSE methods (in seconds)
+
+- `[condition_name]_clustering.pdf`:  Clustering of the GSE methods on the gene-sets ranks (bases on raw p.values).
+
+- `[condition_name]_correlation.pdf`: Correlation Plot of the GSEA methods on the gene-sets ranks (bases on raw p.values).
+
+- `[condition_name]_pca.pdf`: PCA of the GSEA methods on the gene-sets ranks (bases on raw p.values).
+
+- `[condition_name]_eigen_fall.pdf`: Fall of the eigen values of the PCA.
+
+- `[condition_name]_snailplot.pdf`: Mset Ensemblist plot showing the intersection of the different gene-sets found  significantly enriched (p.value < alpha) by each GSEA method. Methods retrieving 0 significantly enriched gene-sets are not included.
+
+- `[condition_name]_upsetr.pdf`: UpsetR Ensemblist plot showing the intersection of the different gene-sets found  significantly enriched (p.value < alpha) by each GSEA method. Methods retrieving 0 significantly enriched gene-sets are not included. Only exclusive intersections are taken into account.
+
+- `[condition_name]_heatmap.pdf`: Binary heatmap showing whether a gene-set is found differentially (red) expressed (p.value < alpha) by a GSEA method or not (blue). Only the gene-sets belonging the biggest intersections size (n), and the second biggest intersections size (n-1) are included.
+
+- `[condition_name]_advanced_sumplot_rank.pdf`: Summary plot combining both the logFC on the y-axis and the -log10(p.value) on the x-axis. The size of the bubbles indicates the size of the gene-set (number of genes) while the color indicates the average rank of the gene-set.
+
+- `[condition_name]_advanced_sumplot_direction.pdf`: Summary plot combining both the logFC on the y-axis and the -log10(p.value) on the x-axis. The size of the bubbles indicates the significance (combination of p.value and logFC) while the color indicates the direction of logFC.
+
+- `[condition_name]_rank_pval_corplot.pdf`: Scatterplot of combined p.values and average ranks with -log10(combined adjusted p.value) on x-axis, and average rank on the y-axis. Sperman correlation coefficient shown in the title.

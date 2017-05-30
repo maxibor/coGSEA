@@ -1,11 +1,16 @@
 Package: coGSEA
 Title: coGSEA : comparison of Gene Set Enrichment Analysis methods
-Version: 0.0.1
+Version: 0.99
+Date: 30-05-2017
 Authors@R: person("Maxime", "Borry", email = "maxime.borry@gmail.com", role = c("aut", "cre"))
-Description: comparison of GSEA methods on the ranks and pvalues of genesets. Largely inspired (and contains some code) by eGSEA package.
-License: MIT
+Description: comparison of gene-set enrichment methods on the ranks and pvalues of gene-sets. Largely inspired (and contains some code) by eGSEA package.
+License: GPL-2
 Encoding: UTF-8
 LazyData: false
+biocViews: DifferentialExpression, GO, GeneExpression,
+        GeneSetEnrichment, Genetics, Microarray, MultipleComparison,
+        OneChannel, Pathways, RNASeq, Sequencing, Software,
+        SystemsBiology, KEGG
 Depends:
 	R (>= 3.3.2),
 	parallel,
