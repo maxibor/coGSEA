@@ -1,7 +1,6 @@
 ---
 title: "coGSEA : comparative Gene Set Enrichment Analysis"
 author: "Maxime Borry"
-version: "0.99"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -11,6 +10,8 @@ vignette: >
 ---
 
 <img src="../logo.png" width="300">  
+
+version : 0.99
 
 ## Table of Content
 
