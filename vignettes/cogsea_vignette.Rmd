@@ -19,8 +19,8 @@ vignette: >
 * [Inputs](#inputs)
 * [Parameters](#parameters)
 * [Data preparation for running coGSEA](#data-preparation-for-running-cogsea)
-   * [MicroArray data](#microarray-data)
-   * [RNAseq data](#rnaseq-data)
+    * [MicroArray data](#microarray-data)
+    * [RNAseq data](#rnaseq-data)
 * [Output](#output)
 
 
