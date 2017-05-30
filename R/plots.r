@@ -1,6 +1,6 @@
 runTimePlot = function(preparedData, savePlot = TRUE, directoryPath = directoryPath){
   print("Plotting runtime")
-  pdf(paste(directoryPath,"cGSEA_methods_runtime.pdf",sep = ""), width = 10, height = 7, useDingbats = FALSE)
+  pdf(paste(directoryPath,"coGSEA_methods_runtime.pdf",sep = ""), width = 10, height = 7, useDingbats = FALSE)
   graphics::barplot(unlist(preparedData$time), las = 2, ylab = "second", main = "RunTime")
   dev.off()
 

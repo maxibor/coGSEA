@@ -68,7 +68,7 @@ generateSummaryPlots <- function(plot.data, file.name = "resumPlot", Xlab="-log1
                 dev.off()
             }
             if (is.null(format) || tolower(format) == "png"){
-                png(paste0(file.name, ".rank.png"), width = 800, height = 700)
+                png(paste0(file.name, "_rank.png"), width = 800, height = 700)
                 print(p + ggplot2::geom_text(size=5, mapping=ggplot2::aes(x=x.data, y=y.data,
         label=id),
                                 data=plot.data.sig,
@@ -101,7 +101,7 @@ name="Regulation Direction") # low="#5FE377"
 
         if (savePlot == TRUE){
             if (is.null(format) || tolower(format) == "pdf"){
-                pdf(paste0(file.name, "direction_.pdf"), width = 10, height = 7,
+                pdf(paste0(file.name, "_direction.pdf"), width = 10, height = 7,
                         useDingbats = FALSE)
 
                 print(p + ggplot2::geom_text(size=5, mapping=ggplot2::aes(x=x.data, y=y.data,
