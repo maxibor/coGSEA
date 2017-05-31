@@ -498,7 +498,7 @@ prepareData = function(cGSEAcoreOutput, alpha = 0.05, directoryPath, pvalAdjMeth
     writeLines(paste(names(genecollec),unlist(lapply(genecollec, paste, collapse=",")), sep = ","))
     sink()
   }
-  
+
 
   logFCTable = getlogFCFromLMFit(voom.results = cGSEAcoreOutput$Elist, contrast = cGSEAcoreOutput$contrast, logFC.cutoff = 0, fdr.cutoff = 1)
 
@@ -517,6 +517,7 @@ prepareData = function(cGSEAcoreOutput, alpha = 0.05, directoryPath, pvalAdjMeth
   resumPlot1 = list()
   resumPlot2 = list()
   resumPlot2Table = list()
+  limma.out = logFCTable
 
 
 
@@ -598,6 +599,12 @@ prepareData = function(cGSEAcoreOutput, alpha = 0.05, directoryPath, pvalAdjMeth
     base::rownames(resumPlot2[[condi]]) = base::names(cGSEAcoreOutput$collection)
     resumPlot2[[condi]] = base::as.data.frame(resumPlot2[[condi]])
     resumPlot2[[condi]][,base::c("x.data","y.data","dir","rank","sig", "gsSize")] = base::apply(resumPlot2[[condi]][,base::c("x.data","y.data","dir","rank","sig", "gsSize")],2, as.numeric)
+
+    #limma data
+
+    if (shinyMode == FALSE){
+        utils::write.csv(logFCTable$limma.tops[[condi]], file = paste(directoryPath,"limma_results_",condi,".csv",sep = ""))
+    }
 
     # resumPlot2Table[[condi]] = cbind(as.numeric(-log10(pvalComb)), abs(as.numeric(gsLogFC)), as.numeric(gsLogFC/abs(gsLogFC)), as.numeric(avgRank), as.numeric(signifScore), abrev_names_vector, unlist(lapply(cGSEAcoreOutput$collection, length)))
     # colnames(resumPlot2Table[[condi]]) = c("x.data","y.data","dir","rank","sig","id", "gsSize")
