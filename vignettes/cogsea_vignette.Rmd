@@ -179,14 +179,13 @@ colnames(resmin)= cname
 resmin = as.data.frame(resmin)
 ```
 
-#### Aggregating the PROBES matching the same ENTREZ accession number by averaging them and applying a log transformation
+#### Aggregating the PROBES matching the same ENTREZ accession number by averaging them
 
 ```{r, eval = FALSE}
 result = aggregate(. ~ ENTREZID, resmin, mean)
 result$ENTREZID = levels(as.factor(as.character(resmin$ENTREZID)))
 rownames(result) = result$ENTREZID
 result = result[,-1]
-result = log(result)
 ```
 
 #### Visualizing in boxplot to check normalization
