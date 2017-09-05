@@ -534,10 +534,16 @@ prepareData = function(cGSEAcoreOutput, alpha = 0.05, directoryPath, pvalAdjMeth
     pvalComb = combinePval(pvalAdjTable, type = pvalCombMethod)
     pvalComb = base::unlist(base::lapply(pvalComb, '[[',3))
 
+    #Gene Set logFC
+    gsLogFC = geneSetsLogFC(logFcMatrix = logFCTable, genesetCollection = cGSEAcoreOutput$collection, condition = condi)
+
     #result Table
     resTable2 = base::cbind(resTable, pvalAdjTable)
     resTable3 = base::cbind(resTable2, pvalComb)
     base::colnames(resTable3)[base::ncol(resTable3)] = "combined_p.value"
+    resTable3 = base::cbind(resTable3, gsLogFC)
+    base::colnames(resTable3)[base::ncol(resTable3)] = "logFC"
+
     result[[condi]] = stats::na.omit(resTable3)
     result[[condi]] = combineRanks(result[[condi]])
     base::colnames(result[[condi]])[base::ncol(result[[condi]])] = "Avg_Rank"
@@ -585,7 +591,6 @@ prepareData = function(cGSEAcoreOutput, alpha = 0.05, directoryPath, pvalAdjMeth
     }
 
     #for resumPlot1 - simple summary plot
-    gsLogFC = geneSetsLogFC(logFcMatrix = logFCTable, genesetCollection = cGSEAcoreOutput$collection, condition = condi)
     resumPlot1[[condi]]$x = -base::log10(pvalComb)
     resumPlot1[[condi]]$y = gsLogFC
     resumPlot1[[condi]]$labels = abrev_names_vector
