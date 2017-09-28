@@ -39,8 +39,9 @@ In the current version, those 12 methods include :
 - [safe](http://bioconductor.org/packages/release/bioc/html/safe.html)
 - [setrank](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1571-6)
 
-**Disclaimer** : This tool is largely inspired by the [eGSEA](http://bioconductor.org/packages/release/bioc/html/EGSEA.html) R package (and contains some of its code)
+**Disclaimer** : This tool is largely inspired by the [eGSEA](http://bioconductor.org/packages/release/bioc/html/EGSEA.html) R package (and contains some of its code).
 
+A longer and more detailed description and test of coGSEA can be found in the [doc directory](./doc/cogsea.pdf)
 # How to install
 
 ``` r
