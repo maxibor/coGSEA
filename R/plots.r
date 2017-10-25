@@ -29,7 +29,7 @@ pcaPlot = function(preparedData, contrCondi, savePlot = TRUE, directoryPath = di
 
   res.pca = FactoMineR::PCA(preparedData$PCA[[contrCondi]], scale.unit = T, axes = c(1,2), graph = FALSE)
   eigen = res.pca$eig["percentage of variance"]
-  base::names(eigen) = base::rownames(res.pca$eig)
+  # base::names(eigen) = base::rownames(res.pca$eig)
 
   print(paste("Plotting Eigen values Plot for condition", contrCondi))
   pdf(paste(directoryPath, contrCondi, "_eigen_fall.pdf", sep = ""), width = 10, height = 7, useDingbats = FALSE)
@@ -105,7 +105,7 @@ cGSEAMakePlots = function(preparedData, directoryPath){
   for (condi in base::names(preparedData$result)){
     base::dir.create(file.path(directoryPath,"/plots/", condi), showWarnings = FALSE)
     clusteringPlot(preparedData = preparedData, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/"))
-    pcaPlot(preparedData = preparedData, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/"))
+    try(pcaPlot(preparedData = preparedData, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/")))
     corPlot(preparedData = preparedData, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/"))
     upsetrPlot(preparedData = preparedData, contrCondi = condi, directoryPath = paste0(directoryPath,"/plots/",condi,"/"))
     heatmapPlot(preparedData, contrCondi = condi, savePlot = TRUE, directoryPath =  paste0(directoryPath,"/plots/",condi,"/"))
