@@ -547,6 +547,7 @@ prepareData = function(cGSEAcoreOutput, alpha = 0.05, directoryPath, pvalAdjMeth
     result[[condi]] = stats::na.omit(resTable3)
     result[[condi]] = combineRanks(result[[condi]])
     base::colnames(result[[condi]])[base::ncol(result[[condi]])] = "Avg_Rank"
+    result[[condi]] <- result[[condi]][base::order(result[[condi]]$combined_p.value),]
     if (shinyMode == FALSE){
       utils::write.csv(result[[condi]], file = paste(directoryPath,"/result_",condi,".csv", sep = ""))
     }
