@@ -24,7 +24,7 @@ Depends:
 	edgeR,
 	metap,
 	EGSEAdata,
-	gage,
+	gage (=2.24.0),
 	globaltest,
 	GSVA,
 	PADOG,
