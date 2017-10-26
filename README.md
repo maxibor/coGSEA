@@ -27,7 +27,7 @@ coGSEA(ElistObject = elist, contrastMatrix = contrast, ENTREZGenesId = elist$gen
 **coGSEA** (**co**mparative **G**ene **S**et **E**nrichment **A**nalysis) is a **R** package developped to help you compare and combine up to 12 different methods of Gene Set Enrichment Analysis.
 In the current version, those 12 methods include :
 - [camera](http://www.bioconductor.org/packages/release/bioc/html/limma.html)
-- [gage](https://bioconductor.org/packages/release/bioc/html/gage.html) **Works only with gage `2.24.0` Install manually from tar.gz archive provided here in** `./dependancies`
+- [gage](https://bioconductor.org/packages/release/bioc/html/gage.html) **Works only with gage `2.24.0` Install manually from tar.gz archive provided here in** [dependancies](./dependancies)
 - [globaltest](https://bioconductor.org/packages/release/bioc/html/globaltest.html)
 - [gsva](https://bioconductor.org/packages/release/bioc/html/GSVA.html)
 - [ssgsea](https://bioconductor.org/packages/release/bioc/html/GSVA.html)
