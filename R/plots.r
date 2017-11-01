@@ -28,8 +28,8 @@ heatmapPlot = function(preparedData, contrCondi, savePlot = TRUE, directoryPath 
 pcaPlot = function(preparedData, contrCondi, savePlot = TRUE, directoryPath = directoryPath){
 
   res.pca = FactoMineR::PCA(preparedData$PCA[[contrCondi]], scale.unit = T, axes = c(1,2), graph = FALSE)
-  eigen = res.pca$eig["percentage of variance"]
-  # base::names(eigen) = base::rownames(res.pca$eig)
+  eigen = res.pca$eig[,2]
+  base::names(eigen) = base::rownames(res.pca$eig)
 
   print(paste("Plotting Eigen values Plot for condition", contrCondi))
   pdf(paste(directoryPath, contrCondi, "_eigen_fall.pdf", sep = ""), width = 10, height = 7, useDingbats = FALSE)
